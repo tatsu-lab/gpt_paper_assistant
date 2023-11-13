@@ -52,7 +52,7 @@ def render_md_string(papers_dict):
         + "\nTotal relevant papers: "
         + str(len(papers_dict))
         + "\n\n"
-        + "Paper selection prompt and criteria [here](#paper-selection-prompt)\n\n"
+        + "Paper selection prompt and criteria at the bottom\n\n"
         + "Table of contents with paper titles:\n\n"
     )
     title_strings = [
