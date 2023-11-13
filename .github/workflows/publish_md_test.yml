@@ -1,0 +1,49 @@
+name: Publish output MD to github pages
+
+on:
+  workflow_dispatch:
+  workflow_run:
+    workflows: ["Run daily arxiv"]
+    types:
+      - completed
+
+
+permissions: write-all
+
+jobs:
+  build:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    outputs:
+      file-exists: ${{steps.file-check.outputs.file_exists}}
+    steps:
+    - uses: actions/checkout@v3
+    - name: Download artifact
+      id: download-artifact
+      uses: dawidd6/action-download-artifact@v2
+      with:
+        workflow: cron_runs.yaml
+        workflow_conclusion: success
+        name: arxiv-scanner-outputs
+    - name: Display structure of downloaded files
+      run: ls -R
+    - name: Check for output.md
+      id: check_files
+      uses: andstor/file-existence-action@v2
+      with:
+        files: output.md
+    - name: Convert output.md to pages
+      uses: wranders/markdown-to-pages-action@v0.1
+      if: steps.check_files.outputs.files_exists == 'true'
+      with:
+       token: ${{ secrets.GITHUB_TOKEN }}
+       file: output.md
+    - uses: actions/upload-pages-artifact@v2
+      if: steps.check_files.outputs.files_exists == 'true'
+      with:
+        path: dist
+    - uses: actions/deploy-pages@v1
+      if: steps.check_files.outputs.files_exists == 'true'
+      id: deployment
