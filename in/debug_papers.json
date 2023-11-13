@@ -1,0 +1,340 @@
+[
+    [
+        {
+            "authors": [
+                "Sloan Nietert",
+                "Ziv Goldfeld",
+                "Soroosh Shafiee"
+            ],
+            "title": "Outlier-Robust Wasserstein DRO. ",
+            "abstract": "Distributionally robust optimization (DRO) is an effective approach for data-driven decision-making in the presence of uncertainty. Geometric uncertainty due to sampling or localized perturbations of data points is captured by Wasserstein DRO (WDRO), which seeks to learn a model that performs uniformly well over a Wasserstein ball centered around the observed data distribution. However, WDRO fails to account for non-geometric perturbations such as adversarial outliers, which can greatly distort the Wasserstein distance measurement and impede the learned model. We address this gap by proposing a novel outlier-robust WDRO framework for decision-making under both geometric (Wasserstein) perturbations and non-geometric (total variation (TV)) contamination that allows an $\\varepsilon$-fraction of data to be arbitrarily corrupted. We design an uncertainty set using a certain robust Wasserstein ball that accounts for both perturbation types and derive minimax optimal excess risk bounds for this procedure that explicitly capture the Wasserstein and TV risks. We prove a strong duality result that enables tractable convex reformulations and efficient computation of our outlier-robust WDRO problem. When the loss function depends only on low-dimensional features of the data, we eliminate certain dimension dependencies from the risk bounds that are unavoidable in the general setting. Finally, we present experiments validating our theory on standard regression and classification tasks. ",
+            "arxiv_id": "2311.05573",
+            "ARXIVID": "2311.05573",
+            "COMMENT": "This paper does not match any of the specified criteria.",
+            "RELEVANCE": 1,
+            "NOVELTY": 3
+        },
+        {
+            "authors": [
+                "Tong Zhu",
+                "Junfei Ren",
+                "Zijian Yu",
+                "Mengsong Wu",
+                "Guoliang Zhang",
+                "Xiaoye Qu",
+                "Wenliang Chen",
+                "Zhefeng Wang",
+                "Baoxing Huai",
+                "Min Zhang"
+            ],
+            "title": "Mirror: A Universal Framework for Various Information Extraction Tasks. ",
+            "abstract": "Sharing knowledge between information extraction tasks has always been a challenge due to the diverse data formats and task variations. Meanwhile, this divergence leads to information waste and increases difficulties in building complex applications in real scenarios. Recent studies often formulate IE tasks as a triplet extraction problem. However, such a paradigm does not support multi-span and n-ary extraction, leading to weak versatility. To this end, we reorganize IE problems into unified multi-slot tuples and propose a universal framework for various IE tasks, namely Mirror. Specifically, we recast existing IE tasks as a multi-span cyclic graph extraction problem and devise a non-autoregressive graph decoding algorithm to extract all spans in a single step. It is worth noting that this graph structure is incredibly versatile, and it supports not only complex IE tasks, but also machine reading comprehension and classification tasks. We manually construct a corpus containing 57 datasets for model pretraining, and conduct experiments on 30 datasets across 8 downstream tasks. The experimental results demonstrate that our model has decent compatibility and outperforms or reaches competitive performance with SOTA systems under few-shot and zero-shot settings. The code, model weights, and pretraining corpus are available at https://github.com/Spico197/Mirror . ",
+            "arxiv_id": "2311.05419",
+            "ARXIVID": "2311.05419",
+            "COMMENT": "This paper does not match any of the specified criteria as it focuses on information extraction tasks and not on the statistical machine learning or generative modeling in NLP.",
+            "RELEVANCE": 1,
+            "NOVELTY": 3
+        },
+        {
+            "authors": [
+                "Luca Beurer-Kellner",
+                "Mark Niklas M\u00fcller",
+                "Marc Fischer",
+                "Martin Vechev"
+            ],
+            "title": "Prompt Sketching for Large Language Models. ",
+            "abstract": "Many recent prompting strategies for large language models (LLMs) query the model multiple times sequentially -- first to produce intermediate results and then the final answer. However, using these methods, both decoder and model are unaware of potential follow-up prompts, leading to disconnected and undesirably wordy intermediate responses. In this work, we address this issue by proposing prompt sketching, a new prompting paradigm in which an LLM does not only respond by completing a prompt, but by predicting values for multiple variables in a template. This way, sketching grants users more control over the generation process, e.g., by providing a reasoning framework via intermediate instructions, leading to better overall results. The key idea enabling sketching with existing, autoregressive models is to adapt the decoding procedure to also score follow-up instructions during text generation, thus optimizing overall template likelihood in inference. Our experiments show that in a zero-shot setting, prompt sketching outperforms existing, sequential prompting schemes such as direct asking or chain-of-thought on 7 out of 8 LLM benchmarking tasks, including state tracking, arithmetic reasoning, and general question answering. To facilitate future use, we release a number of generic, yet effective sketches applicable to many tasks, and an open source library called dclib, powering our sketch-aware decoders. ",
+            "arxiv_id": "2311.04954",
+            "ARXIVID": "2311.04954",
+            "COMMENT": "Criterion 2: The paper proposes 'prompt sketching', a new prompting paradigm for large language models, which could be considered a methodological improvement to instruction-following.",
+            "RELEVANCE": 8,
+            "NOVELTY": 7
+        },
+        {
+            "authors": [
+                "ShengYun Peng",
+                "Seongmin Lee",
+                "Xiaojing Wang",
+                "Rajarajeswari Balasubramaniyan",
+                "Duen Horng Chau"
+            ],
+            "title": "High-Performance Transformers for Table Structure Recognition Need Early Convolutions. ",
+            "abstract": "Table structure recognition (TSR) aims to convert tabular images into a machine-readable format, where a visual encoder extracts image features and a textual decoder generates table-representing tokens. Existing approaches use classic convolutional neural network (CNN) backbones for the visual encoder and transformers for the textual decoder. However, this hybrid CNN-Transformer architecture introduces a complex visual encoder that accounts for nearly half of the total model parameters, markedly reduces both training and inference speed, and hinders the potential for self-supervised learning in TSR. In this work, we design a lightweight visual encoder for TSR without sacrificing expressive power. We discover that a convolutional stem can match classic CNN backbone performance, with a much simpler model. The convolutional stem strikes an optimal balance between two crucial factors for high-performance TSR: a higher receptive field (RF) ratio and a longer sequence length. This allows it to \"see\" an appropriate portion of the table and \"store\" the complex table structure within sufficient context length for the subsequent transformer. We conducted reproducible ablation studies and open-sourced our code at https://github.com/poloclub/tsr-convstem to enhance transparency, inspire innovations, and facilitate fair comparisons in our domain as tables are a promising modality for representation learning. ",
+            "arxiv_id": "2311.05565",
+            "ARXIVID": "2311.05565",
+            "COMMENT": "This paper does not match any of the specified criteria as it focuses on table structure recognition using transformers and convolutions, which is not related to the statistical machine learning or generative modeling in NLP.",
+            "RELEVANCE": 1,
+            "NOVELTY": 3
+        }
+    ],
+    [
+        {
+            "authors": [
+                "James Boyko",
+                "Joseph Cohen",
+                "Nathan Fox",
+                "Maria Han Veiga",
+                "Jennifer I-Hsiu Li",
+                "Jing Liu",
+                "Bernardo Modenesi",
+                "Andreas H. Rauch",
+                "Kenneth N. Reid",
+                "Soumi Tribedi",
+                "Anastasia Visheratina",
+                "Xin Xie"
+            ],
+            "title": "An Interdisciplinary Outlook on Large Language Models for Scientific Research. ",
+            "abstract": "In this paper, we describe the capabilities and constraints of Large Language Models (LLMs) within disparate academic disciplines, aiming to delineate their strengths and limitations with precision. We examine how LLMs augment scientific inquiry, offering concrete examples such as accelerating literature review by summarizing vast numbers of publications, enhancing code development through automated syntax correction, and refining the scientific writing process. Simultaneously, we articulate the challenges LLMs face, including their reliance on extensive and sometimes biased datasets, and the potential ethical dilemmas stemming from their use. Our critical discussion extends to the varying impacts of LLMs across fields, from the natural sciences, where they help model complex biological sequences, to the social sciences, where they can parse large-scale qualitative data. We conclude by offering a nuanced perspective on how LLMs can be both a boon and a boundary to scientific progress. ",
+            "arxiv_id": "2311.04929",
+            "ARXIVID": "2311.04929",
+            "COMMENT": "This paper does not match any of the specified criteria as it provides a general discussion on the capabilities and constraints of LLMs across various academic disciplines.",
+            "RELEVANCE": 1,
+            "NOVELTY": 2
+        },
+        {
+            "authors": [
+                "Joey Hong",
+                "Sergey Levine",
+                "Anca Dragan"
+            ],
+            "title": "Zero-Shot Goal-Directed Dialogue via RL on Imagined Conversations. ",
+            "abstract": "Large language models (LLMs) have emerged as powerful and general solutions to many natural language tasks. However, many of the most important applications of language generation are interactive, where an agent has to talk to a person to reach a desired outcome. For example, a teacher might try to understand their student's current comprehension level to tailor their instruction accordingly, and a travel agent might ask questions of their customer to understand their preferences in order to recommend activities they might enjoy. LLMs trained with supervised fine-tuning or \"single-step\" RL, as with standard RLHF, might struggle which tasks that require such goal-directed behavior, since they are not trained to optimize for overall conversational outcomes after multiple turns of interaction. In this work, we explore a new method for adapting LLMs with RL for such goal-directed dialogue. Our key insight is that, though LLMs might not effectively solve goal-directed dialogue tasks out of the box, they can provide useful data for solving such tasks by simulating suboptimal but human-like behaviors. Given a textual description of a goal-directed dialogue task, we leverage LLMs to sample diverse synthetic rollouts of hypothetical in-domain human-human interactions. Our algorithm then utilizes this dataset with offline reinforcement learning to train an interactive conversational agent that can optimize goal-directed objectives over multiple turns. In effect, the LLM produces examples of possible interactions, and RL then processes these examples to learn to perform more optimal interactions. Empirically, we show that our proposed approach achieves state-of-the-art performance in various goal-directed dialogue tasks that include teaching and preference elicitation. ",
+            "arxiv_id": "2311.05584",
+            "ARXIVID": "2311.05584",
+            "COMMENT": "Matches criterion 2 as it explores a new method for adapting LLMs with RL for goal-directed dialogue, which is a methodological improvement to RLHF and instruction-following.",
+            "RELEVANCE": 9,
+            "NOVELTY": 7
+        },
+        {
+            "authors": [
+                "Erik Schultheis",
+                "Marek Wydmuch",
+                "Wojciech Kot\u0142owski",
+                "Rohit Babbar",
+                "Krzysztof Dembczy\u0144ski"
+            ],
+            "title": "Generalized test utilities for long-tail performance in extreme multi-label classification. ",
+            "abstract": "Extreme multi-label classification (XMLC) is the task of selecting a small subset of relevant labels from a very large set of possible labels. As such, it is characterized by long-tail labels, i.e., most labels have very few positive instances. With standard performance measures such as precision@k, a classifier can ignore tail labels and still report good performance. However, it is often argued that correct predictions in the tail are more interesting or rewarding, but the community has not yet settled on a metric capturing this intuitive concept. The existing propensity-scored metrics fall short on this goal by confounding the problems of long-tail and missing labels. In this paper, we analyze generalized metrics budgeted \"at k\" as an alternative solution. To tackle the challenging problem of optimizing these metrics, we formulate it in the expected test utility (ETU) framework, which aims at optimizing the expected performance on a fixed test set. We derive optimal prediction rules and construct computationally efficient approximations with provable regret guarantees and robustness against model misspecification. Our algorithm, based on block coordinate ascent, scales effortlessly to XMLC problems and obtains promising results in terms of long-tail performance. ",
+            "arxiv_id": "2311.05081",
+            "ARXIVID": "2311.05081",
+            "COMMENT": "This paper does not match any of the specified criteria as it focuses on extreme multi-label classification and does not directly relate to language models or the specific topics of interest.",
+            "RELEVANCE": 1,
+            "NOVELTY": 3
+        },
+        {
+            "authors": [
+                "Licheng Wen",
+                "Xuemeng Yang",
+                "Daocheng Fu",
+                "Xiaofeng Wang",
+                "Pinlong Cai",
+                "Xin Li",
+                "Tao Ma",
+                "Yingxuan Li",
+                "Linran Xu",
+                "Dengke Shang",
+                "Zheng Zhu",
+                "Shaoyan Sun",
+                "Yeqi Bai",
+                "Xinyu Cai",
+                "Min Dou",
+                "Shuanglu Hu",
+                "Botian Shi"
+            ],
+            "title": "On the Road with GPT-4V(ision): Early Explorations of Visual-Language Model on Autonomous Driving. ",
+            "abstract": "The pursuit of autonomous driving technology hinges on the sophisticated integration of perception, decision-making, and control systems. Traditional approaches, both data-driven and rule-based, have been hindered by their inability to grasp the nuance of complex driving environments and the intentions of other road users. This has been a significant bottleneck, particularly in the development of common sense reasoning and nuanced scene understanding necessary for safe and reliable autonomous driving. The advent of Visual Language Models (VLM) represents a novel frontier in realizing fully autonomous vehicle driving. This report provides an exhaustive evaluation of the latest state-of-the-art VLM, \\modelnamefull, and its application in autonomous driving scenarios. We explore the model's abilities to understand and reason about driving scenes, make decisions, and ultimately act in the capacity of a driver. Our comprehensive tests span from basic scene recognition to complex causal reasoning and real-time decision-making under varying conditions. Our findings reveal that \\modelname demonstrates superior performance in scene understanding and causal reasoning compared to existing autonomous systems. It showcases the potential to handle out-of-distribution scenarios, recognize intentions, and make informed decisions in real driving contexts. However, challenges remain, particularly in direction discernment, traffic light recognition, vision grounding, and spatial reasoning tasks. These limitations underscore the need for further research and development. Project is now available on GitHub for interested parties to access and utilize: \\url{https://github.com/PJLab-ADG/GPT4V-AD-Exploration} ",
+            "arxiv_id": "2311.05332",
+            "ARXIVID": "2311.05332",
+            "COMMENT": "This paper does not match any of the specified criteria as it focuses on the application of visual-language models in autonomous driving, which is outside the scope of the specified interests.",
+            "RELEVANCE": 1,
+            "NOVELTY": 4
+        },
+        {
+            "authors": [
+                "Daniel Galvez",
+                "Tim Kaldewey"
+            ],
+            "title": "GPU-Accelerated WFST Beam Search Decoder for CTC-based Speech Recognition. ",
+            "abstract": "While Connectionist Temporal Classification (CTC) models deliver state-of-the-art accuracy in automated speech recognition (ASR) pipelines, their performance has been limited by CPU-based beam search decoding. We introduce a GPU-accelerated Weighted Finite State Transducer (WFST) beam search decoder compatible with current CTC models. It increases pipeline throughput and decreases latency, supports streaming inference, and also supports advanced features like utterance-specific word boosting via on-the-fly composition. We provide pre-built DLPack-based python bindings for ease of use with Python-based machine learning frameworks at https://github.com/nvidia-riva/riva-asrlib-decoder. We evaluated our decoder for offline and online scenarios, demonstrating that it is the fastest beam search decoder for CTC models. In the offline scenario it achieves up to 7 times more throughput than the current state-of-the-art CPU decoder and in the online streaming scenario, it achieves nearly 8 times lower latency, with same or better word error rate. ",
+            "arxiv_id": "2311.04996",
+            "ARXIVID": "2311.04996",
+            "COMMENT": "This paper does not match any of the specified criteria as it focuses on GPU-accelerated beam search decoding for CTC-based speech recognition, which is not related to the specified topics of interest in language models.",
+            "RELEVANCE": 1,
+            "NOVELTY": 3
+        }
+    ],
+    [
+        {
+            "authors": [
+                "Hongjian Zhou",
+                "Boyang Gu",
+                "Xinyu Zou",
+                "Yiru Li",
+                "Sam S. Chen",
+                "Peilin Zhou",
+                "Junling Liu",
+                "Yining Hua",
+                "Chengfeng Mao",
+                "Xian Wu",
+                "Zheng Li",
+                "Fenglin Liu"
+            ],
+            "title": "A Survey of Large Language Models in Medicine: Progress, Application, and Challenge. ",
+            "abstract": "Large language models (LLMs), such as ChatGPT, have achieved substantial attention due to their impressive human language understanding and generation capabilities. Therefore, the application of LLMs in medicine to assist physicians and patient care emerges as a promising research direction in both artificial intelligence and clinical medicine. To this end, this survey provides a comprehensive overview of the current progress, applications, and challenges faced by LLMs in medicine. Specifically, we aim to address the following questions: 1) What are LLMs and how can medical LLMs be built? 2) What are the downstream performances of medical LLMs? 3) How can medical LLMs be utilized in real-world clinical practice? 4) What challenges arise from the use of medical LLMs? 5) How can we better construct and utilize medical LLMs? As a result, this survey aims to provide insights into the opportunities and challenges of LLMs in medicine and serve as a valuable resource for constructing practical and effective medical LLMs. A regularly updated list of practical guide resources of medical LLMs can be found at https://github.com/AI-in-Health/MedLLMsPracticalGuide. ",
+            "arxiv_id": "2311.05112",
+            "ARXIVID": "2311.05112",
+            "COMMENT": "This paper does not match any of the specified criteria as it is a survey on the application of LLMs in medicine.",
+            "RELEVANCE": 1,
+            "NOVELTY": 2
+        },
+        {
+            "authors": [
+                "Jianzhong Wu",
+                "Mengyang Gu"
+            ],
+            "title": "Perfecting Liquid-State Theories with Machine Intelligence. ",
+            "abstract": "Recent years have seen a significant increase in the use of machine intelligence for predicting electronic structure, molecular force fields, and the physicochemical properties of various condensed systems. However, substantial challenges remain in developing a comprehensive framework capable of handling a wide range of atomic compositions and thermodynamic conditions. This perspective discusses potential future developments in liquid-state theories leveraging on recent advancements of functional machine learning. By harnessing the strengths of theoretical analysis and machine learning techniques including surrogate models, dimension reduction and uncertainty quantification, we envision that liquid-state theories will gain significant improvements in accuracy, scalability and computational efficiency, enabling their broader applications across diverse materials and chemical systems. ",
+            "arxiv_id": "2311.05167",
+            "ARXIVID": "2311.05167",
+            "COMMENT": "This paper does not match any of the specified criteria as it discusses liquid-state theories and machine intelligence, not language models.",
+            "RELEVANCE": 1,
+            "NOVELTY": 3
+        },
+        {
+            "authors": [
+                "Yanzhao Zhang",
+                "Dingkun Long",
+                "Zehan Li",
+                "Pengjun Xie"
+            ],
+            "title": "Text Representation Distillation via Information Bottleneck Principle. ",
+            "abstract": "Pre-trained language models (PLMs) have recently shown great success in text representation field. However, the high computational cost and high-dimensional representation of PLMs pose significant challenges for practical applications. To make models more accessible, an effective method is to distill large models into smaller representation models. In order to relieve the issue of performance degradation after distillation, we propose a novel Knowledge Distillation method called IBKD. This approach is motivated by the Information Bottleneck principle and aims to maximize the mutual information between the final representation of the teacher and student model, while simultaneously reducing the mutual information between the student model's representation and the input data. This enables the student model to preserve important learned information while avoiding unnecessary information, thus reducing the risk of over-fitting. Empirical studies on two main downstream applications of text representation (Semantic Textual Similarity and Dense Retrieval tasks) demonstrate the effectiveness of our proposed approach. ",
+            "arxiv_id": "2311.05472",
+            "ARXIVID": "2311.05472",
+            "COMMENT": "This paper does not match any of the specified criteria as it focuses on knowledge distillation for text representation, not on the specified topics of interest.",
+            "RELEVANCE": 1,
+            "NOVELTY": 4
+        },
+        {
+            "authors": [
+                "Dipak Dulal",
+                "Joseph J. Charney",
+                "Michael Gallagher",
+                "Carmeliza Navasca",
+                "Nicholas Skowronski"
+            ],
+            "title": "Exploring and Analyzing Wildland Fire Data Via Machine Learning Techniques. ",
+            "abstract": "This research project investigated the correlation between a 10 Hz time series of thermocouple temperatures and turbulent kinetic energy (TKE) computed from wind speeds collected from a small experimental prescribed burn at the Silas Little Experimental Forest in New Jersey, USA. The primary objective of this project was to explore the potential for using thermocouple temperatures as predictors for estimating the TKE produced by a wildland fire. Machine learning models, including Deep Neural Networks, Random Forest Regressor, Gradient Boosting, and Gaussian Process Regressor, are employed to assess the potential for thermocouple temperature perturbations to predict TKE values. Data visualization and correlation analyses reveal patterns and relationships between thermocouple temperatures and TKE, providing insight into the underlying dynamics. The project achieves high accuracy in predicting TKE by employing various machine learning models despite a weak correlation between the predictors and the target variable. The results demonstrate significant success, particularly from regression models, in accurately estimating the TKE. The research findings contribute to fire behavior and smoke modeling science, emphasizing the importance of incorporating machine learning approaches and identifying complex relationships between fine-scale fire behavior and turbulence. Accurate TKE estimation using thermocouple temperatures allows for the refinement of models that can inform decision-making in fire management strategies, facilitate effective risk mitigation, and optimize fire management efforts. This project highlights the valuable role of machine learning techniques in analyzing wildland fire data, showcasing their potential to advance fire research and management practices. ",
+            "arxiv_id": "2311.05128",
+            "ARXIVID": "2311.05128",
+            "COMMENT": "This paper does not match any of the specified criteria as it is about wildland fire data analysis using machine learning, not language models.",
+            "RELEVANCE": 1,
+            "NOVELTY": 3
+        },
+        {
+            "authors": [
+                "Simian Luo",
+                "Yiqin Tan",
+                "Suraj Patil",
+                "Daniel Gu",
+                "Patrick von Platen",
+                "Apolin\u00e1rio Passos",
+                "Longbo Huang",
+                "Jian Li",
+                "Hang Zhao"
+            ],
+            "title": "LCM-LoRA: A Universal Stable-Diffusion Acceleration Module. ",
+            "abstract": "Latent Consistency Models (LCMs) have achieved impressive performance in accelerating text-to-image generative tasks, producing high-quality images with minimal inference steps. LCMs are distilled from pre-trained latent diffusion models (LDMs), requiring only ~32 A100 GPU training hours. This report further extends LCMs' potential in two aspects: First, by applying LoRA distillation to Stable-Diffusion models including SD-V1.5, SSD-1B, and SDXL, we have expanded LCM's scope to larger models with significantly less memory consumption, achieving superior image generation quality. Second, we identify the LoRA parameters obtained through LCM distillation as a universal Stable-Diffusion acceleration module, named LCM-LoRA. LCM-LoRA can be directly plugged into various Stable-Diffusion fine-tuned models or LoRAs without training, thus representing a universally applicable accelerator for diverse image generation tasks. Compared with previous numerical PF-ODE solvers such as DDIM, DPM-Solver, LCM-LoRA can be viewed as a plug-in neural PF-ODE solver that possesses strong generalization abilities. Project page: https://github.com/luosiallen/latent-consistency-model. ",
+            "arxiv_id": "2311.05556",
+            "ARXIVID": "2311.05556",
+            "COMMENT": "Criterion 4 is closely matched as the paper discusses LCM-LoRA, an acceleration module for diffusion language models, which could represent a significant advance in the performance of such models.",
+            "RELEVANCE": 9,
+            "NOVELTY": 7
+        }
+    ],
+    [
+        {
+            "authors": [
+                "Akshit Jindal",
+                "Vikram Goyal",
+                "Saket Anand",
+                "Chetan Arora"
+            ],
+            "title": "Army of Thieves: Enhancing Black-Box Model Extraction via Ensemble based sample selection. ",
+            "abstract": "Machine Learning (ML) models become vulnerable to Model Stealing Attacks (MSA) when they are deployed as a service. In such attacks, the deployed model is queried repeatedly to build a labelled dataset. This dataset allows the attacker to train a thief model that mimics the original model. To maximize query efficiency, the attacker has to select the most informative subset of data points from the pool of available data. Existing attack strategies utilize approaches like Active Learning and Semi-Supervised learning to minimize costs. However, in the black-box setting, these approaches may select sub-optimal samples as they train only one thief model. Depending on the thief model's capacity and the data it was pretrained on, the model might even select noisy samples that harm the learning process. In this work, we explore the usage of an ensemble of deep learning models as our thief model. We call our attack Army of Thieves(AOT) as we train multiple models with varying complexities to leverage the crowd's wisdom. Based on the ensemble's collective decision, uncertain samples are selected for querying, while the most confident samples are directly included in the training data. Our approach is the first one to utilize an ensemble of thief models to perform model extraction. We outperform the base approaches of existing state-of-the-art methods by at least 3% and achieve a 21% higher adversarial sample transferability than previous work for models trained on the CIFAR-10 dataset. ",
+            "arxiv_id": "2311.04588",
+            "ARXIVID": "2311.04588",
+            "COMMENT": "This paper does not match any of the specified criteria.",
+            "RELEVANCE": 1,
+            "NOVELTY": 3
+        },
+        {
+            "authors": [
+                "Wujiang Xu",
+                "Xuying Ning",
+                "Wenfang Lin",
+                "Mingming Ha",
+                "Qiongxu Ma",
+                "Linxun Chen",
+                "Bing Han",
+                "Minnan Luo"
+            ],
+            "title": "Towards Open-world Cross-Domain Sequential Recommendation: A Model-Agnostic Contrastive Denoising Approach. ",
+            "abstract": "Cross-domain sequential recommendation (CDSR) aims to address the data sparsity problems that exist in traditional sequential recommendation (SR) systems.  The existing approaches aim to design a specific cross-domain unit that can transfer and propagate information across multiple domains by relying on overlapping users with abundant behaviors. However, in real-world recommender systems, CDSR scenarios usually consist of a majority of long-tailed users with sparse behaviors and cold-start users who only exist in one domain. This leads to a drop in the performance of existing CDSR methods in the real-world industry platform. Therefore, improving the consistency and effectiveness of models in open-world CDSR scenarios is crucial for constructing CDSR models (\\textit{1st} CH). Recently, some SR approaches have utilized auxiliary behaviors to complement the information for long-tailed users. However, these multi-behavior SR methods cannot deliver promising performance in CDSR, as they overlook the semantic gap between target and auxiliary behaviors, as well as user interest deviation across domains (\\textit{2nd} CH). ",
+            "arxiv_id": "2311.04760",
+            "ARXIVID": "2311.04760",
+            "COMMENT": "This paper does not match any of the specified criteria.",
+            "RELEVANCE": 1,
+            "NOVELTY": 3
+        },
+        {
+            "authors": [
+                "Lea M. Trenkwalder",
+                "Eleanor Scerri",
+                "Thomas E. O'Brien",
+                "Vedran Dunjko"
+            ],
+            "title": "Compilation of product-formula Hamiltonian simulation via reinforcement learning. ",
+            "abstract": "Hamiltonian simulation is believed to be one of the first tasks where quantum computers can yield a quantum advantage. One of the most popular methods of Hamiltonian simulation is Trotterization, which makes use of the approximation $e^{i\\sum_jA_j}\\sim \\prod_je^{iA_j}$ and higher-order corrections thereto. However, this leaves open the question of the order of operations (i.e. the order of the product over $j$, which is known to affect the quality of approximation). In some cases this order is fixed by the desire to minimise the error of approximation; when it is not the case, we propose that the order can be chosen to optimize compilation to a native quantum architecture. This presents a new compilation problem -- order-agnostic quantum circuit compilation -- which we prove is NP-hard in the worst case. In lieu of an easily-computable exact solution, we turn to methods of heuristic optimization of compilation. We focus on reinforcement learning due to the sequential nature of the compilation task, comparing it to simulated annealing and Monte Carlo tree search. While two of the methods outperform a naive heuristic, reinforcement learning clearly outperforms all others, with a gain of around 12% with respect to the second-best method and of around 50% compared to the naive heuristic in terms of the gate count. We further test the ability of RL to generalize across instances of the compilation problem, and find that a single learner is able to solve entire problem families. This demonstrates the ability of machine learning techniques to provide assistance in an order-agnostic quantum compilation task. ",
+            "arxiv_id": "2311.04285",
+            "ARXIVID": "2311.04285",
+            "COMMENT": "This paper does not match any of the specified criteria.",
+            "RELEVANCE": 1,
+            "NOVELTY": 4
+        },
+        {
+            "authors": [
+                "Koyena Pal",
+                "Jiuding Sun",
+                "Andrew Yuan",
+                "Byron C. Wallace",
+                "David Bau"
+            ],
+            "title": "Future Lens: Anticipating Subsequent Tokens from a Single Hidden State. ",
+            "abstract": "We conjecture that hidden state vectors corresponding to individual input tokens encode information sufficient to accurately predict several tokens ahead. More concretely, in this paper we ask: Given a hidden (internal) representation of a single token at position $t$ in an input, can we reliably anticipate the tokens that will appear at positions $\\geq t + 2$? To test this, we measure linear approximation and causal intervention methods in GPT-J-6B to evaluate the degree to which individual hidden states in the network contain signal rich enough to predict future hidden states and, ultimately, token outputs. We find that, at some layers, we can approximate a model's output with more than 48% accuracy with respect to its prediction of subsequent tokens through a single hidden state. Finally we present a \"Future Lens\" visualization that uses these methods to create a new view of transformer states. ",
+            "arxiv_id": "2311.04897",
+            "ARXIVID": "2311.04897",
+            "COMMENT": "This paper does not match any of the specified criteria.",
+            "RELEVANCE": 1,
+            "NOVELTY": 5
+        },
+        {
+            "authors": [
+                "Ercong Yu",
+                "Jinle Zhu",
+                "Qiang Li",
+                "Zilong Liu",
+                "Hongyang Chen",
+                "Shlomo Shamai (Shitz)",
+                "H. Vincent Poor"
+            ],
+            "title": "Deep Learning Assisted Multiuser MIMO Load Modulated Systems for Enhanced Downlink mmWave Communications. ",
+            "abstract": "This paper is focused on multiuser load modulation arrays (MU-LMAs) which are attractive due to their low system complexity and reduced cost for millimeter wave (mmWave) multi-input multi-output (MIMO) systems. The existing precoding algorithm for downlink MU-LMA relies on a sub-array structured (SAS) transmitter which may suffer from decreased degrees of freedom and complex system configuration. Furthermore, a conventional LMA codebook with codewords uniformly distributed on a hypersphere may not be channel-adaptive and may lead to increased signal detection complexity. In this paper, we conceive an MU-LMA system employing a full-array structured (FAS) transmitter and propose two algorithms accordingly. The proposed FAS-based system addresses the SAS structural problems and can support larger numbers of users. For LMA-imposed constant-power downlink precoding, we propose an FAS-based normalized block diagonalization (FAS-NBD) algorithm. However, the forced normalization may result in performance degradation. This degradation, together with the aforementioned codebook design problems, is difficult to solve analytically. This motivates us to propose a Deep Learning-enhanced (FAS-DL-NBD) algorithm for adaptive codebook design and codebook-independent decoding. It is shown that the proposed algorithms are robust to imperfect knowledge of channel state information and yield excellent error performance. Moreover, the FAS-DL-NBD algorithm enables signal detection with low complexity as the number of bits per codeword increases. ",
+            "arxiv_id": "2311.04537",
+            "ARXIVID": "2311.04537",
+            "COMMENT": "This paper does not match any of the specified criteria.",
+            "RELEVANCE": 1,
+            "NOVELTY": 3
+        }
+    ]
+]

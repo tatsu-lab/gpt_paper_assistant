@@ -1,0 +1,4 @@
+# Copy me to authors.txt and replace the authors below with people you actually want to follow
+# the numbers behind the author are important - these are semantic scholar author IDs which you can find by looking up the authors on semantic scholar and taking the numbers at the end of the URL
+# Example line:
+Tatsunori B. Hashimoto, 3056528

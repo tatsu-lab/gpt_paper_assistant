@@ -1,0 +1,7 @@
+ # this file goes into the prompt to tell the bot your interest areas. you can write down your interests in whatever format you want
+ # they can be simple, like a one line description like
+ 1. Shows new powerful test set contamination or membership inference methods for language models
+ # or in the case of more general areas like `instruction-following`, you might want to give examples
+ 2. New methodological improvements to RLHF or instruction-following which are specific fine-tuning steps that are taken to make language models better at following user instructions across a range of tasks.
+    - Relevant: papers that discuss specific methods like RLHF, or instruction-tuning datasets, improving these methods, or analyzing them. Usually these papers will explicitly mention RLHF, instruction-following or instruction-tuning.
+    - Not relevant: papers about adaptation to some task. Simply following instructions or inputs are not sufficient.
