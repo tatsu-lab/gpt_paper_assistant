@@ -18,7 +18,7 @@ def render_paper(paper_entry: dict, idx: int) -> str:
     abstract = paper_entry["abstract"]
     # get the authors
     authors = paper_entry["authors"]
-    paper_string = f'## {idx}. [{title}]({arxiv_url}) <a name="link{idx}"></a><a id="link{idx}"></a>\n'
+    paper_string = f'## {idx}. [{title}]({arxiv_url}) <a id="link{idx}"></a>\n'
     paper_string += f"**ArXiv ID:** {arxiv_id}\n"
     paper_string += f'**Authors:** {", ".join(authors)}\n\n'
     paper_string += f"**Abstract:** {abstract}\n\n"
@@ -67,7 +67,7 @@ def render_md_string(papers_dict):
     # join all papers into one string
     output_string = output_string + "\n".join(paper_strings)
     output_string += "\n\n---\n\n"
-    output_string += f'## Paper selection prompt<a name="prompt"></a><a id="prompt"></a>\n{criterion}'
+    output_string += f'## Paper selection prompt <a id="prompt"></a>\n{criterion}'
     return output_string
 
 
