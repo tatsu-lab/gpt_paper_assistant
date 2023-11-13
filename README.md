@@ -3,6 +3,8 @@
 This repo implements a very simple daily scanner for Arxiv that uses GPT4 and author matches to find papers you might find interesting. 
 It will run daily via github actions and can post this information to slack via a bot or just render it in a static github-pages website.
 
+A simple demo of the daily papers can be seen [here](https://tatsu-lab.github.io/gpt_paper_assistant/) running on `cs.CL`
+
 As a cost estimate, running this on all of `cs.CL, LG, AI` cost about $0.7 ($0.5 for `cs.LG`, $0.2 for `cs.CL`) on 11/12/2023
 
 
