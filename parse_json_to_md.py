@@ -52,7 +52,7 @@ def render_md_string(papers_dict):
         + "\nTotal relevant papers: "
         + str(len(papers_dict))
         + "\n\n"
-        + "Paper selection prompt and criteria [here](#prompt)\n\n"
+        + "Paper selection prompt and criteria [here](#paper-selection-prompt)\n\n"
         + "Table of contents with paper titles:\n\n"
     )
     title_strings = [
@@ -67,7 +67,7 @@ def render_md_string(papers_dict):
     # join all papers into one string
     output_string = output_string + "\n".join(paper_strings)
     output_string += "\n\n---\n\n"
-    output_string += f'## Paper selection prompt <a id="prompt"></a>\n{criterion}'
+    output_string += f'## Paper selection prompt\n{criterion}'
     return output_string
 
 
