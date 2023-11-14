@@ -9,7 +9,7 @@ from typing import TypeVar, Generator
 import io
 from tqdm import tqdm
 
-from arxiv_scraper import get_papers_from_arxiv_rss
+from arxiv_scraper import get_papers_from_arxiv_rss_api
 from filter_papers import filter_by_author, filter_by_gpt
 from parse_json_to_md import render_md_string
 from push_to_slack import push_to_slack
@@ -151,7 +151,7 @@ def get_papers_from_arxiv(config):
     area_list = config["FILTERING"]["arxiv_category"].split(",")
     paper_set = set()
     for area in area_list:
-        papers = get_papers_from_arxiv_rss(area.strip(), config)
+        papers = get_papers_from_arxiv_rss_api(area.strip(), config)
         paper_set.update(set(papers))
     if config["OUTPUT"].getboolean("debug_messages"):
         print("Number of papers:" + str(len(paper_set)))

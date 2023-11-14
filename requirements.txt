@@ -1,9 +1,10 @@
-openai
+openai~=1.2.3
 Levenshtein
-requests
-tqdm
-feedparser
-retry
+requests~=2.31.0
+tqdm~=4.66.1
+feedparser~=6.0.10
+retry~=0.9.2
 ruff
 pre-commit
 slack_sdk
+arxiv~=2.0.0
