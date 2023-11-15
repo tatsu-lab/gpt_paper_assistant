@@ -67,7 +67,7 @@ def render_md_string(papers_dict):
     # join all papers into one string
     output_string = output_string + "\n".join(paper_strings)
     output_string += "\n\n---\n\n"
-    output_string += f'## Paper selection prompt\n{criterion}'
+    output_string += f"## Paper selection prompt\n{criterion}"
     return output_string
 
 

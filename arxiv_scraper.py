@@ -31,18 +31,24 @@ class Paper:
 
 
 def is_earlier(ts1, ts2):
-    return int(ts1.replace('.','')) < int(ts2.replace('.',''))
+    return int(ts1.replace(".", "")) < int(ts2.replace(".", ""))
 
 
 def get_papers_from_arxiv_api(area: str, timestamp, last_id) -> List[Paper]:
     # grabs papers from the arxiv API endpoint.
     # we need this because the RSS feed is buggy, and drops some of the most recent papers silently.
     end_date = timestamp
-    start_date = timestamp-timedelta(days=4)
+    start_date = timestamp - timedelta(days=4)
     search = arxiv.Search(
-        query="("+area+") AND submittedDate:[" + start_date.strftime('%Y%m%d') + "* TO " + end_date.strftime('%Y%m%d') + "*]",
+        query="("
+        + area
+        + ") AND submittedDate:["
+        + start_date.strftime("%Y%m%d")
+        + "* TO "
+        + end_date.strftime("%Y%m%d")
+        + "*]",
         max_results=None,
-        sort_by=arxiv.SortCriterion.SubmittedDate
+        sort_by=arxiv.SortCriterion.SubmittedDate,
     )
     results = list(arxiv.Client().results(search))
     api_papers = []
@@ -52,10 +58,14 @@ def get_papers_from_arxiv_api(area: str, timestamp, last_id) -> List[Paper]:
             authors = [author.name for author in result.authors]
             summary = result.summary
             summary = unescape(re.sub("\n", " ", summary))
-            paper = Paper(authors=authors, title=result.title, abstract=summary, arxiv_id=result.get_short_id()[:10])
+            paper = Paper(
+                authors=authors,
+                title=result.title,
+                abstract=summary,
+                arxiv_id=result.get_short_id()[:10],
+            )
             api_papers.append(paper)
     return api_papers
-
 
 
 def get_papers_from_arxiv_rss(area: str, config: Optional[dict]) -> List[Paper]:
@@ -73,7 +83,9 @@ def get_papers_from_arxiv_rss(area: str, config: Optional[dict]) -> List[Paper]:
         return []
     # get the list of entries
     entries = feed.entries
-    timestamp = datetime.strptime(feed.headers["last-modified"], '%a, %d %b %Y %H:%M:%S GMT')
+    timestamp = datetime.strptime(
+        feed.headers["last-modified"], "%a, %d %b %Y %H:%M:%S GMT"
+    )
     # ugly hack: this should be the very oldest paper in the RSS feed that was not put on hold.
     # if ArXiv changes their RSS announcement format this line will break, but we have no other way of getting this info
     last_id = feed.entries[0].id.split("/")[-1]
@@ -115,7 +127,6 @@ def get_papers_from_arxiv_rss_api(area: str, config: Optional[dict]) -> List[Pap
     api_paper_list = get_papers_from_arxiv_api(area, timestamp, last_id)
     merged_paper_list = merge_paper_list(paper_list, api_paper_list)
     return merged_paper_list
-
 
 
 if __name__ == "__main__":

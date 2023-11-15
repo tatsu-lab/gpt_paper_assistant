@@ -69,13 +69,18 @@ def call_chatgpt(full_prompt, openai_client, model, num_samples):
         messages=[{"role": "user", "content": full_prompt}],
         temperature=0.0,
         n=int(num_samples),
-        seed=0
+        seed=0,
     )
 
 
 def run_and_parse_chatgpt(full_prompt, openai_client, config):
     # just runs the chatgpt prompt, tries to parse the resulting JSON
-    completion = call_chatgpt(full_prompt, openai_client, config["SELECTION"]["model"], config["FILTERING"]["num_samples"])
+    completion = call_chatgpt(
+        full_prompt,
+        openai_client,
+        config["SELECTION"]["model"],
+        config["FILTERING"]["num_samples"],
+    )
     json_dicts = defaultdict(list)
     for choice in completion.choices:
         out_text = choice.message.content
@@ -99,12 +104,18 @@ def run_and_parse_chatgpt(full_prompt, openai_client, config):
                 continue
     all_dict = []
     for id, json_list in json_dicts.items():
-        rel_score = sum([float(jdict["RELEVANCE"]) for jdict in json_list])/float(len(json_list))
-        nov_score = sum([float(jdict["NOVELTY"]) for jdict in json_list]) / float(len(json_list))
-        new_dict = {"ARXIVID":json_list[0]["ARXIVID"],
-        "COMMENT":json_list[0]["COMMENT"],
-        "RELEVANCE":rel_score,
-        "NOVELTY":nov_score}
+        rel_score = sum([float(jdict["RELEVANCE"]) for jdict in json_list]) / float(
+            len(json_list)
+        )
+        nov_score = sum([float(jdict["NOVELTY"]) for jdict in json_list]) / float(
+            len(json_list)
+        )
+        new_dict = {
+            "ARXIVID": json_list[0]["ARXIVID"],
+            "COMMENT": json_list[0]["COMMENT"],
+            "RELEVANCE": rel_score,
+            "NOVELTY": nov_score,
+        }
         all_dict.append(new_dict)
     return all_dict, calc_price(config["SELECTION"]["model"], completion.usage)
 
