@@ -1,7 +1,9 @@
 import configparser
 import dataclasses
 import json
+import os
 import re
+from collections import defaultdict
 from typing import List
 
 import retry
@@ -61,37 +63,50 @@ def calc_price(model, usage):
 
 
 @retry.retry(tries=3, delay=2)
-def call_chatgpt(full_prompt, openai_client, model):
+def call_chatgpt(full_prompt, openai_client, model, num_samples):
     return openai_client.chat.completions.create(
         model=model,
         messages=[{"role": "user", "content": full_prompt}],
         temperature=0.0,
+        n=int(num_samples),
+        seed=0
     )
 
 
 def run_and_parse_chatgpt(full_prompt, openai_client, config):
     # just runs the chatgpt prompt, tries to parse the resulting JSON
-    completion = call_chatgpt(full_prompt, openai_client, config["SELECTION"]["model"])
-    out_text = completion.choices[0].message.content
-    out_text = re.sub("```jsonl\n", "", out_text)
-    out_text = re.sub("```", "", out_text)
-    out_text = re.sub(r"\n+", "\n", out_text)
-    out_text = re.sub("},", "}", out_text).strip()
-    # split out_text line by line and parse each as a json.
-    json_dicts = []
-    for line in out_text.split("\n"):
-        # try catch block to attempt to parse json
-        try:
-            json_dicts.append(json.loads(line))
-        except Exception as ex:
-            if config["OUTPUT"].getboolean("debug_messages"):
-                print("Exception happened " + str(ex))
-                print("Failed to parse LM output as json")
-                print(out_text)
-                print("RAW output")
-                print(completion.choices[0].message.content)
-            continue
-    return json_dicts, calc_price(config["SELECTION"]["model"], completion.usage)
+    completion = call_chatgpt(full_prompt, openai_client, config["SELECTION"]["model"], config["FILTERING"]["num_samples"])
+    json_dicts = defaultdict(list)
+    for choice in completion.choices:
+        out_text = choice.message.content
+        out_text = re.sub("```jsonl\n", "", out_text)
+        out_text = re.sub("```", "", out_text)
+        out_text = re.sub(r"\n+", "\n", out_text)
+        out_text = re.sub("},", "}", out_text).strip()
+        # split out_text line by line and parse each as a json.
+        for line in out_text.split("\n"):
+            # try catch block to attempt to parse json
+            try:
+                loaded_output = json.loads(line)
+                json_dicts[loaded_output["ARXIVID"]].append(loaded_output)
+            except Exception as ex:
+                if config["OUTPUT"].getboolean("debug_messages"):
+                    print("Exception happened " + str(ex))
+                    print("Failed to parse LM output as json")
+                    print(out_text)
+                    print("RAW output")
+                    print(completion.choices[0].message.content)
+                continue
+    all_dict = []
+    for id, json_list in json_dicts.items():
+        rel_score = sum([float(jdict["RELEVANCE"]) for jdict in json_list])/float(len(json_list))
+        nov_score = sum([float(jdict["NOVELTY"]) for jdict in json_list]) / float(len(json_list))
+        new_dict = {"ARXIVID":json_list[0]["ARXIVID"],
+        "COMMENT":json_list[0]["COMMENT"],
+        "RELEVANCE":rel_score,
+        "NOVELTY":nov_score}
+        all_dict.append(new_dict)
+    return all_dict, calc_price(config["SELECTION"]["model"], completion.usage)
 
 
 def paper_to_string(paper_entry: Paper) -> str:
@@ -230,11 +245,9 @@ def filter_by_gpt(
 if __name__ == "__main__":
     config = configparser.ConfigParser()
     config.read("configs/config.ini")
-    # now load the api keys
-    keyconfig = configparser.ConfigParser()
-    keyconfig.read("configs/keys.ini")
-    S2_API_KEY = keyconfig["KEYS"]["semanticscholar"]
-    openai_client = OpenAI(api_key=keyconfig["KEYS"]["openai"])
+    S2_API_KEY = os.environ.get("S2_KEY")
+    OAI_KEY = os.environ.get("OAI_KEY")
+    openai_client = OpenAI(api_key=OAI_KEY)
     # deal with config parsing
     with open("configs/base_prompt.txt", "r") as f:
         base_prompt = f.read()
@@ -244,7 +257,7 @@ if __name__ == "__main__":
         postfix_prompt = f.read()
     # loads papers from 'in/debug_papers.json' and filters them
     # with open("in/debug_papers.json", "r") as f:
-    with open("in/gpt_paper_batches.debug-11-10.json", "r") as f:
+    with open("in/gpt_paper_batches.debug-11-14.json", "r") as f:
         paper_list_in_dict = json.load(f)
     papers = [
         [
