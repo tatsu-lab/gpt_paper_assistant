@@ -94,6 +94,10 @@ def get_papers_from_arxiv_rss(area: str, config: Optional[dict]) -> Tuple[List[P
         # ignore updated papers
         if ("UPDATED" in paper.title) or ("CROSS LISTED" in paper.title):
             continue
+        # extract area
+        paper_area = re.findall("\[.*\]", paper.title)[0]
+        if (f'[{area}]' != paper_area) and (config["FILTERING"].getboolean("force_primary")):
+            continue
         # otherwise make a new paper, for the author field make sure to strip the HTML tags
         authors = [
             unescape(re.sub("<[^<]+?>", "", author)).strip()
