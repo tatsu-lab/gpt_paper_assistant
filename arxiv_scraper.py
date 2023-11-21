@@ -2,7 +2,7 @@ import dataclasses
 import json
 from datetime import datetime, timedelta
 from html import unescape
-from typing import List, Optional
+from typing import List, Optional, Tuple
 import re
 import arxiv
 
@@ -68,7 +68,7 @@ def get_papers_from_arxiv_api(area: str, timestamp, last_id) -> List[Paper]:
     return api_papers
 
 
-def get_papers_from_arxiv_rss(area: str, config: Optional[dict]) -> List[Paper]:
+def get_papers_from_arxiv_rss(area: str, config: Optional[dict]) -> Tuple[List[Paper], datetime, str]:
     # get the feed from http://export.arxiv.org/rss/ and use the updated timestamp to avoid duplicates
     updated = datetime.utcnow() - timedelta(days=1)
     # format this into the string format 'Fri, 03 Nov 2023 00:30:00 GMT'
@@ -80,7 +80,7 @@ def get_papers_from_arxiv_rss(area: str, config: Optional[dict]) -> List[Paper]:
         if (config is not None) and config["OUTPUT"]["debug_messages"]:
             print("No new papers since " + updated_string + " for " + area)
         # if there are no new papers return an empty list
-        return []
+        return [], None, None
     # get the list of entries
     entries = feed.entries
     timestamp = datetime.strptime(
@@ -124,6 +124,8 @@ def merge_paper_list(paper_list, api_paper_list):
 
 def get_papers_from_arxiv_rss_api(area: str, config: Optional[dict]) -> List[Paper]:
     paper_list, timestamp, last_id = get_papers_from_arxiv_rss(area, config)
+    if timestamp is None:
+        return []
     api_paper_list = get_papers_from_arxiv_api(area, timestamp, last_id)
     merged_paper_list = merge_paper_list(paper_list, api_paper_list)
     return merged_paper_list
