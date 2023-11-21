@@ -83,7 +83,7 @@ It filters out any `UPDATED` papers and announces only new ones.
 
 The filtering logic is pretty simple. We first check for author match.
 1. Do a lookup of the authors on semantic scholar, getting a list of candidate matches.
-2. Check the authors of the paper. If the author semantic scholar id matches someone in `authors.txt` it goes in the candidate set with a default score of `author_match_score`.
+2. Check the authors of the paper. If the author semantic scholar id matches someone in `authors.txt` it goes in the candidate set with a default score of `author_match_score`. These papers with matched authors will not go through the next stage of GPT scoring. 
 
 We then check for GPT-evaluated relevance. We do this in two steps.
 1. Filter out any papers that have no authors with h-index above `hcutoff` in `config.ini`. This is to reduce costs.
@@ -107,7 +107,7 @@ The NOVELTY should be a score from 1 to 10, where 10 is a groundbreaking, genera
 4. Papers are filtered if they have scores below either the relevance and novelty cutoffs in `config.ini`
 5. Papers are given an overall score based on equal weight to relevance and novelty
 
-Finally, both the author-matched and GPT evaluated papers are sorted by the score and the papers are rendered and pushed into their endpoints (text files or Slack).
+Finally, both the author-matched and GPT evaluated papers are sorted by the score (for papers with author-match, we use the `author_match_score`; for others, we use the sum of the GPT-rated relevance and novelty scores for sorting) and the papers are rendered and pushed into their endpoints (text files or Slack).
 
 ## Contributing 
 This repo uses ruff - `ruff check .` and `ruff format .` 

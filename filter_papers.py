@@ -23,18 +23,19 @@ def filter_by_author(all_authors, papers, author_targets, config):
     # author based selection
     for paper in papers:
         all_papers[paper.arxiv_id] = paper
-        for author in paper.authors:
-            if author in all_authors:
-                for alias in all_authors[author]:
-                    if alias["authorId"] in author_targets:
-                        selected_papers[paper.arxiv_id] = {
-                            **dataclasses.asdict(paper),
-                            **{"COMMENT": "Author match"},
-                        }
-                        sort_dict[paper.arxiv_id] = float(
-                            config["SELECTION"]["author_match_score"]
-                        )
-                        break
+        if config["FILTERING"].getboolean("author_match"):
+            for author in paper.authors:
+                if author in all_authors:
+                    for alias in all_authors[author]:
+                        if alias["authorId"] in author_targets:
+                            selected_papers[paper.arxiv_id] = {
+                                **dataclasses.asdict(paper),
+                                **{"COMMENT": "Author match"},
+                            }
+                            sort_dict[paper.arxiv_id] = float(
+                                config["SELECTION"]["author_match_score"]
+                            )
+                            break
     return selected_papers, all_papers, sort_dict
 
 
@@ -231,6 +232,8 @@ def filter_by_gpt(
                     >= int(config["FILTERING"]["relevance_cutoff"])
                     and jdict["NOVELTY"] >= int(config["FILTERING"]["novelty_cutoff"])
                     and jdict["ARXIVID"] in all_papers
+                    ## only add if not covered by author-match yet
+                    and jdict["ARXIVID"] not in selected_papers 
                 ):
                     selected_papers[jdict["ARXIVID"]] = {
                         **dataclasses.asdict(all_papers[jdict["ARXIVID"]]),
