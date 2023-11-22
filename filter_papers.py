@@ -232,14 +232,16 @@ def filter_by_gpt(
                     >= int(config["FILTERING"]["relevance_cutoff"])
                     and jdict["NOVELTY"] >= int(config["FILTERING"]["novelty_cutoff"])
                     and jdict["ARXIVID"] in all_papers
-                    ## only add if not covered by author-match yet
-                    and jdict["ARXIVID"] not in selected_papers 
                 ):
                     selected_papers[jdict["ARXIVID"]] = {
                         **dataclasses.asdict(all_papers[jdict["ARXIVID"]]),
                         **jdict,
                     }
-                    sort_dict[jdict["ARXIVID"]] = jdict["RELEVANCE"] + jdict["NOVELTY"]
+                    ## take the max of author match and gpt score
+                    sort_dict[jdict["ARXIVID"]] = max(
+                        jdict["RELEVANCE"] + jdict["NOVELTY"],
+                        sort_dict.get(jdict["ARXIVID"], 0),
+                    )
                 scored_in_batch.append(
                     {
                         **dataclasses.asdict(all_papers[jdict["ARXIVID"]]),
