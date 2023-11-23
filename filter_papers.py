@@ -23,18 +23,19 @@ def filter_by_author(all_authors, papers, author_targets, config):
     # author based selection
     for paper in papers:
         all_papers[paper.arxiv_id] = paper
-        for author in paper.authors:
-            if author in all_authors:
-                for alias in all_authors[author]:
-                    if alias["authorId"] in author_targets:
-                        selected_papers[paper.arxiv_id] = {
-                            **dataclasses.asdict(paper),
-                            **{"COMMENT": "Author match"},
-                        }
-                        sort_dict[paper.arxiv_id] = float(
-                            config["SELECTION"]["author_match_score"]
-                        )
-                        break
+        if config["FILTERING"].getboolean("author_match"):
+            for author in paper.authors:
+                if author in all_authors:
+                    for alias in all_authors[author]:
+                        if alias["authorId"] in author_targets:
+                            selected_papers[paper.arxiv_id] = {
+                                **dataclasses.asdict(paper),
+                                **{"COMMENT": "Author match"},
+                            }
+                            sort_dict[paper.arxiv_id] = float(
+                                config["SELECTION"]["author_match_score"]
+                            )
+                            break
     return selected_papers, all_papers, sort_dict
 
 
@@ -236,7 +237,11 @@ def filter_by_gpt(
                         **dataclasses.asdict(all_papers[jdict["ARXIVID"]]),
                         **jdict,
                     }
-                    sort_dict[jdict["ARXIVID"]] = jdict["RELEVANCE"] + jdict["NOVELTY"]
+                    ## take the max of author match and gpt score
+                    sort_dict[jdict["ARXIVID"]] = max(
+                        jdict["RELEVANCE"] + jdict["NOVELTY"],
+                        sort_dict.get(jdict["ARXIVID"], 0),
+                    )
                 scored_in_batch.append(
                     {
                         **dataclasses.asdict(all_papers[jdict["ARXIVID"]]),

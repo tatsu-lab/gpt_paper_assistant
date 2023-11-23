@@ -107,7 +107,7 @@ The NOVELTY should be a score from 1 to 10, where 10 is a groundbreaking, genera
 4. Papers are filtered if they have scores below either the relevance and novelty cutoffs in `config.ini`
 5. Papers are given an overall score based on equal weight to relevance and novelty
 
-Finally, both the author-matched and GPT evaluated papers are sorted by the score and the papers are rendered and pushed into their endpoints (text files or Slack).
+Finally, all papers are sorted by the max of their `author_match_score` and the sum of the GPT-rated relevance and novelty scores (the relevance and novelty scores will only show up in the final output if they are above the cutoff thresholds you set in the config file). Then the papers are rendered and pushed into their endpoints (text files or Slack).
 
 ## Contributing 
 This repo uses ruff - `ruff check .` and `ruff format .` 
