@@ -1,9 +1,7 @@
 import configparser
 import dataclasses
 import json
-import os
 import re
-from collections import defaultdict
 from typing import List
 
 import retry
@@ -23,19 +21,18 @@ def filter_by_author(all_authors, papers, author_targets, config):
     # author based selection
     for paper in papers:
         all_papers[paper.arxiv_id] = paper
-        if config["FILTERING"].getboolean("author_match"):
-            for author in paper.authors:
-                if author in all_authors:
-                    for alias in all_authors[author]:
-                        if alias["authorId"] in author_targets:
-                            selected_papers[paper.arxiv_id] = {
-                                **dataclasses.asdict(paper),
-                                **{"COMMENT": "Author match"},
-                            }
-                            sort_dict[paper.arxiv_id] = float(
-                                config["SELECTION"]["author_match_score"]
-                            )
-                            break
+        for author in paper.authors:
+            if author in all_authors:
+                for alias in all_authors[author]:
+                    if alias["authorId"] in author_targets:
+                        selected_papers[paper.arxiv_id] = {
+                            **dataclasses.asdict(paper),
+                            **{"COMMENT": "Author match"},
+                        }
+                        sort_dict[paper.arxiv_id] = float(
+                            config["SELECTION"]["author_match_score"]
+                        )
+                        break
     return selected_papers, all_papers, sort_dict
 
 
@@ -64,61 +61,38 @@ def calc_price(model, usage):
 
 
 @retry.retry(tries=3, delay=2)
-def call_chatgpt(full_prompt, openai_client, model, num_samples):
+def call_chatgpt(full_prompt, openai_client, model):
     return openai_client.chat.completions.create(
         model=model,
         messages=[{"role": "user", "content": full_prompt}],
         temperature=0.0,
-        n=int(num_samples),
         seed=0,
     )
 
 
 def run_and_parse_chatgpt(full_prompt, openai_client, config):
     # just runs the chatgpt prompt, tries to parse the resulting JSON
-    completion = call_chatgpt(
-        full_prompt,
-        openai_client,
-        config["SELECTION"]["model"],
-        config["FILTERING"]["num_samples"],
-    )
-    json_dicts = defaultdict(list)
-    for choice in completion.choices:
-        out_text = choice.message.content
-        out_text = re.sub("```jsonl\n", "", out_text)
-        out_text = re.sub("```", "", out_text)
-        out_text = re.sub(r"\n+", "\n", out_text)
-        out_text = re.sub("},", "}", out_text).strip()
-        # split out_text line by line and parse each as a json.
-        for line in out_text.split("\n"):
-            # try catch block to attempt to parse json
-            try:
-                loaded_output = json.loads(line)
-                json_dicts[loaded_output["ARXIVID"]].append(loaded_output)
-            except Exception as ex:
-                if config["OUTPUT"].getboolean("debug_messages"):
-                    print("Exception happened " + str(ex))
-                    print("Failed to parse LM output as json")
-                    print(out_text)
-                    print("RAW output")
-                    print(completion.choices[0].message.content)
-                continue
-    all_dict = []
-    for id, json_list in json_dicts.items():
-        rel_score = sum([float(jdict["RELEVANCE"]) for jdict in json_list]) / float(
-            len(json_list)
-        )
-        nov_score = sum([float(jdict["NOVELTY"]) for jdict in json_list]) / float(
-            len(json_list)
-        )
-        new_dict = {
-            "ARXIVID": json_list[0]["ARXIVID"],
-            "COMMENT": json_list[0]["COMMENT"],
-            "RELEVANCE": rel_score,
-            "NOVELTY": nov_score,
-        }
-        all_dict.append(new_dict)
-    return all_dict, calc_price(config["SELECTION"]["model"], completion.usage)
+    completion = call_chatgpt(full_prompt, openai_client, config["SELECTION"]["model"])
+    out_text = completion.choices[0].message.content
+    out_text = re.sub("```jsonl\n", "", out_text)
+    out_text = re.sub("```", "", out_text)
+    out_text = re.sub(r"\n+", "\n", out_text)
+    out_text = re.sub("},", "}", out_text).strip()
+    # split out_text line by line and parse each as a json.
+    json_dicts = []
+    for line in out_text.split("\n"):
+        # try catch block to attempt to parse json
+        try:
+            json_dicts.append(json.loads(line))
+        except Exception as ex:
+            if config["OUTPUT"].getboolean("debug_messages"):
+                print("Exception happened " + str(ex))
+                print("Failed to parse LM output as json")
+                print(out_text)
+                print("RAW output")
+                print(completion.choices[0].message.content)
+            continue
+    return json_dicts, calc_price(config["SELECTION"]["model"], completion.usage)
 
 
 def paper_to_string(paper_entry: Paper) -> str:
@@ -145,9 +119,9 @@ def batched(items, batch_size):
 
 
 def filter_papers_by_title(
-    papers: List[Paper], base_prompt: str, criterion: str
+    papers, config, openai_client, base_prompt, criterion
 ) -> List[Paper]:
-    filter_postfix = "Please identify any papers that you are absolutely sure your friend will not enjoy, formatted as a list of arxiv ids like [ID1, ID2, ID3..]"
+    filter_postfix = 'Identify any papers that are absolutely and completely irrelavent to the criteria, and you are absolutely sure your friend will not enjoy, formatted as a list of arxiv ids like ["ID1", "ID2", "ID3"..]. Be extremely cautious, and if you are unsure at all, do not add a paper in this list. You will check it in detail later.\n Directly respond with the list, do not add ANY extra text before or after the list. Even if every paper seems irrelevant, please keep at least TWO papers'
     batches_of_papers = batched(papers, 20)
     final_list = []
     for batch in batches_of_papers:
@@ -155,14 +129,17 @@ def filter_papers_by_title(
         full_prompt = (
             base_prompt + "\n " + criterion + "\n" + papers_string + filter_postfix
         )
-        completion = call_chatgpt(full_prompt, "gpt-4")
-        cost = calc_price("gpt-4", completion.usage)
+        model = config["SELECTION"]["model"]
+        completion = call_chatgpt(full_prompt, openai_client, model)
+        cost = calc_price(model, completion.usage)
         out_text = completion.choices[0].message.content
         try:
             filtered_set = set(json.loads(out_text))
             for paper in batch:
                 if paper.arxiv_id not in filtered_set:
                     final_list.append(paper)
+                else:
+                    print("Filtered out paper " + paper.arxiv_id)
         except Exception as ex:
             print("Exception happened " + str(ex))
             print("Failed to parse LM output as list " + out_text)
@@ -208,7 +185,9 @@ def filter_by_gpt(
         if config["OUTPUT"].getboolean("debug_messages"):
             print(str(len(paper_list)) + " papers after hindex filtering")
         cost = 0
-        # paper_list, cost = filter_papers_by_title(paper_list, base_prompt, criterion)
+        paper_list, cost = filter_papers_by_title(
+            paper_list, config, openai_client, base_prompt, criterion
+        )
         if config["OUTPUT"].getboolean("debug_messages"):
             print(
                 str(len(paper_list))
@@ -237,11 +216,7 @@ def filter_by_gpt(
                         **dataclasses.asdict(all_papers[jdict["ARXIVID"]]),
                         **jdict,
                     }
-                    ## take the max of author match and gpt score
-                    sort_dict[jdict["ARXIVID"]] = max(
-                        jdict["RELEVANCE"] + jdict["NOVELTY"],
-                        sort_dict.get(jdict["ARXIVID"], 0),
-                    )
+                    sort_dict[jdict["ARXIVID"]] = jdict["RELEVANCE"] + jdict["NOVELTY"]
                 scored_in_batch.append(
                     {
                         **dataclasses.asdict(all_papers[jdict["ARXIVID"]]),
@@ -261,9 +236,11 @@ def filter_by_gpt(
 if __name__ == "__main__":
     config = configparser.ConfigParser()
     config.read("configs/config.ini")
-    S2_API_KEY = os.environ.get("S2_KEY")
-    OAI_KEY = os.environ.get("OAI_KEY")
-    openai_client = OpenAI(api_key=OAI_KEY)
+    # now load the api keys
+    keyconfig = configparser.ConfigParser()
+    keyconfig.read("configs/keys.ini")
+    S2_API_KEY = keyconfig["KEYS"]["semanticscholar"]
+    openai_client = OpenAI(api_key=keyconfig["KEYS"]["openai"])
     # deal with config parsing
     with open("configs/base_prompt.txt", "r") as f:
         base_prompt = f.read()
@@ -272,8 +249,8 @@ if __name__ == "__main__":
     with open("configs/postfix_prompt.txt", "r") as f:
         postfix_prompt = f.read()
     # loads papers from 'in/debug_papers.json' and filters them
-    # with open("in/debug_papers.json", "r") as f:
-    with open("in/gpt_paper_batches.debug-11-14.json", "r") as f:
+    with open("in/debug_papers.json", "r") as f:
+        # with open("in/gpt_paper_batches.debug-11-10.json", "r") as f:
         paper_list_in_dict = json.load(f)
     papers = [
         [

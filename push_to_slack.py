@@ -145,13 +145,13 @@ def build_block_list(title_strings, paper_strings):
                 "type": "mrkdwn",
                 "text": "Total relevant papers (max 50 in thread): "
                 + str(len(title_strings))
-                + "\n Top 10 titles shown below",
+                + "\n Top 20 titles shown below",
             },
         },
         {"type": "divider"},
     ]
 
-    for paper in title_strings[:10]:
+    for paper in title_strings[:20]:
         slack_block_list.append(
             {"type": "section", "text": {"type": "mrkdwn", "text": paper}}
         )

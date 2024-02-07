@@ -5,7 +5,10 @@ It will run daily via github actions and can post this information to slack via 
 
 A simple demo of the daily papers can be seen [here](https://tatsu-lab.github.io/gpt_paper_assistant/) running on `cs.CL`
 
-As a cost estimate, running this on all of `cs.CL, LG, AI` cost about $0.7 ($0.5 for `cs.LG`, $0.2 for `cs.CL`) on 11/12/2023
+As a cost estimate, running this on all of `cs.CL` cost $0.07 on 2/7/2024
+
+## Changelog
+- **2/7/2024**: fixed a critical issue from ArXiv changing their RSS format. Added and enabled a title filtering to reduce costs.
 
 
 ## Quickstart
