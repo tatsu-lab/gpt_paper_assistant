@@ -105,7 +105,7 @@ def get_papers_from_arxiv_rss(area: str, config: Optional[dict]) -> List[Paper]:
         # otherwise make a new paper, for the author field make sure to strip the HTML tags
         authors = [
             unescape(re.sub("<[^<]+?>", "", author)).strip()
-            for author in paper.author.split("\n")
+            for author in paper.author.replace("\n", ", ").split(",")
         ]
         # strip html tags from summary
         summary = re.sub("<[^<]+?>", "", paper.summary)

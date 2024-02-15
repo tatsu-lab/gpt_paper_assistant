@@ -124,6 +124,7 @@ def filter_papers_by_title(
     filter_postfix = 'Identify any papers that are absolutely and completely irrelavent to the criteria, and you are absolutely sure your friend will not enjoy, formatted as a list of arxiv ids like ["ID1", "ID2", "ID3"..]. Be extremely cautious, and if you are unsure at all, do not add a paper in this list. You will check it in detail later.\n Directly respond with the list, do not add ANY extra text before or after the list. Even if every paper seems irrelevant, please keep at least TWO papers'
     batches_of_papers = batched(papers, 20)
     final_list = []
+    cost = 0
     for batch in batches_of_papers:
         papers_string = "".join([paper_to_titles(paper) for paper in batch])
         full_prompt = (
@@ -131,7 +132,7 @@ def filter_papers_by_title(
         )
         model = config["SELECTION"]["model"]
         completion = call_chatgpt(full_prompt, openai_client, model)
-        cost = calc_price(model, completion.usage)
+        cost += calc_price(model, completion.usage)
         out_text = completion.choices[0].message.content
         try:
             filtered_set = set(json.loads(out_text))
