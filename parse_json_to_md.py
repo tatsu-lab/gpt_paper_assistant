@@ -37,7 +37,9 @@ def render_paper(paper_entry: dict, idx: int) -> str:
 def render_title_and_author(paper_entry: dict, idx: int) -> str:
     title = paper_entry["title"]
     authors = paper_entry["authors"]
-    paper_string = f"{idx}. [{title}](#link{idx})\n"
+    # Github Pages seems to prepend 'user-content-' to the above anchors,
+    # so adjust for that and prepend 'user-content' to the in-text links
+    paper_string = f"{idx}. [{title}](#user-content-link{idx})\n" 
     paper_string += f'**Authors:** {", ".join(authors)}\n'
     return paper_string
 
