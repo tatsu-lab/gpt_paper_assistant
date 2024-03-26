@@ -28,10 +28,11 @@ At this point your bot should run daily and publish a static website. You can te
 
 **Optional but highly recommended**: 
 
-6. [Set up a slack bot](https://api.slack.com/start/quickstart), get the OAuth key, set it to `SLACK_KEY` as a github secret
-7. Make a channel for the bot (and invite it to the channel), get its [Slack channel id](https://stackoverflow.com/questions/40940327/what-is-the-simplest-way-to-find-a-slack-team-id-and-a-channel-id), set it as `SLACK_CHANNEL_ID` in a github secret.
-8. Take a look at `configs/config.ini` to tweak how things are filtered.
-9. Set the github repo private to avoid github actions being [set to inactive after 60 days](https://docs.github.com/en/actions/using-workflows/disabling-and-enabling-a-workflow)
+7. Get and set up a semantic scholar API key (`S2_KEY`) as a github secret. Otherwise the author search step will be very slow
+8. [Set up a slack bot](https://api.slack.com/start/quickstart), get the OAuth key, set it to `SLACK_KEY` as a github secret
+9. Make a channel for the bot (and invite it to the channel), get its [Slack channel id](https://stackoverflow.com/questions/40940327/what-is-the-simplest-way-to-find-a-slack-team-id-and-a-channel-id), set it as `SLACK_CHANNEL_ID` in a github secret.
+10. Take a look at `configs/config.ini` to tweak how things are filtered.
+11. Set the github repo private to avoid github actions being [set to inactive after 60 days](https://docs.github.com/en/actions/using-workflows/disabling-and-enabling-a-workflow)
 
 Each day at 1pm UTC, the bot will run and post to slack and publish a github pages website (see the publish_md and cron_runs actions for details).
 

@@ -7,6 +7,8 @@ from openai import OpenAI
 from requests import Session
 from typing import TypeVar, Generator
 import io
+
+from retry import retry
 from tqdm import tqdm
 
 from arxiv_scraper import get_papers_from_arxiv_rss_api
@@ -94,6 +96,7 @@ def get_author_batch(
         return response.json()
 
 
+@retry(tries=3, delay=2.0)
 def get_one_author(session, author: str, S2_API_KEY: str) -> str:
     # query the right endpoint https://api.semanticscholar.org/graph/v1/author/search?query=adam+smith
     params = {"query": author, "fields": "authorId,name,hIndex", "limit": "10"}
@@ -142,8 +145,12 @@ def get_authors(
             auth_map = get_one_author(session, author, S2_API_KEY)
             if auth_map is not None:
                 author_metadata_dict[author] = auth_map
-            # add a 10ms wait time to avoid rate limiting
-            time.sleep(0.01)
+            # add a 20ms wait time to avoid rate limiting
+            # otherwise, semantic scholar aggressively rate limits, so do 1s
+            if S2_API_KEY is not None:
+                time.sleep(0.02)
+            else:
+                time.sleep(1.0)
     return author_metadata_dict
 
 
